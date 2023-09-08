@@ -15,7 +15,7 @@ builder.Services.AddIdentity<BTUser, IdentityRole>(options => options.SignIn.Req
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultUI()
     .AddDefaultTokenProviders();
-builder.Services.AddControllersWithViews();
+builder.Services.AddMvc();
 
 var app = builder.Build();
 
