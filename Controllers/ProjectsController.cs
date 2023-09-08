@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TheBugTracker.Data;
+using TheBugTracker.Extensions;
 using TheBugTracker.Models;
+using TheBugTracker.Services.Interfaces;
 
 namespace TheBugTracker.Controllers
 {
@@ -15,11 +17,13 @@ namespace TheBugTracker.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<BTUser> _userManager;
+        private readonly IBTFileService _bTFileService;
 
-        public ProjectsController(ApplicationDbContext context, UserManager<BTUser> userManager)
+        public ProjectsController(ApplicationDbContext context, UserManager<BTUser> userManager, IBTFileService bTFileService)
         {
             _context = context;
             _userManager = userManager;
+            _bTFileService = bTFileService;
         }
 
         // GET: Projects
@@ -53,7 +57,7 @@ namespace TheBugTracker.Controllers
         public IActionResult Create()
         {
 
-           
+            int companyId = User.Identity!.GetCompanyId();
             ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Name");
             return View();
         }
@@ -63,10 +67,21 @@ namespace TheBugTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate,ProjectPriority,ImageFormFile")] Project project)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate,ProjectPriorityId,ImageFormFile,CompanyId")] Project project)
         {
             if (ModelState.IsValid)
             {
+                if (project.ImageFormFile != null)
+                {
+                    // Create the Image Service
+                    // 1. Convert file to byte array and assign to ImageDate
+                    project.ImageFileData = await _bTFileService.ConvertFileToByteArrayAsync(project.ImageFormFile);
+                    // 2. Assign the ImageType based on the choosen file
+                    project.ImageFileType = project.ImageFormFile.ContentType;
+                }
+
+                project.Created = DateTime.Now;
+
                 _context.Add(project);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
