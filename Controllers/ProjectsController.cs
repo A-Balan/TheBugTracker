@@ -33,29 +33,37 @@ namespace TheBugTracker.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Projects/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Projects == null)
-            {
-                return NotFound();
-            }
+		// GET: Projects/Details/5
+		public async Task<IActionResult> Details(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
 
-            var project = await _context.Projects
-                .Include(p => p.Company)
-                .Include(p => p.ProjectPriority)
-                .FirstOrDefaultAsync(m => m.Id == id);
+			// Remember that the _context should not be used directly in the controller so....     
 
-            if (project == null)
-            {
-                return NotFound();
-            }
+			// Edit the following code to use the service layer. 
+			// Your goal is to return the 'project' from the databse
+			// with the Id equal to the parameter passed in.               
+			// This is the only modification necessary for this method/action.     
 
-            return View(project);
-        }
+			var project = await _context.Projects
+				.Include(p => p.Company)
+				.Include(p => p.ProjectPriority)
+				.FirstOrDefaultAsync(m => m.Id == id);
 
-        // GET: Projects/Create
-        public IActionResult Create()
+
+			if (project == null)
+			{
+				return NotFound();
+			}
+
+			return View(project);
+		}
+
+		// GET: Projects/Create
+		public IActionResult Create()
         {
 
             int companyId = User.Identity!.GetCompanyId();
@@ -106,7 +114,7 @@ namespace TheBugTracker.Controllers
                 return NotFound();
             }
             ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", project.CompanyId);
-            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id", project.ProjectPriorityId);
+            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Name", project.ProjectPriorityId);
             return View(project);
         }
 
@@ -115,7 +123,7 @@ namespace TheBugTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CompanyId,Name,Description,Created,StartDate,EndDate,ProjectPriorityId,ImageFileData,ImageFileType,Archived")] Project project)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CompanyId,Name,Description,Created,StartDate,EndDate,ProjectPriorityId,ImageFileData,ImageFileType,ImageFormFile,Archived")] Project project)
         {
             if (id != project.Id)
             {
@@ -124,6 +132,16 @@ namespace TheBugTracker.Controllers
 
             if (ModelState.IsValid)
             {
+                //Set the Image data if one has been choosen
+                if (project.ImageFormFile != null)
+                {
+                    // Create the Image Service
+                    // 1. Convert file to byte array and assign to ImageDate
+                    project.ImageFileData = await _bTFileService.ConvertFileToByteArrayAsync(project.ImageFormFile);
+                    // 2. Assign the ImageType based on the choosen file
+                    project.ImageFileType = project.ImageFormFile.ContentType;
+                }
+
                 try
                 {
                     _context.Update(project);

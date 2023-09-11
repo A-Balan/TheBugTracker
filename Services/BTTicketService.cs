@@ -1,13 +1,33 @@
-﻿using TheBugTracker.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using TheBugTracker.Data;
+using TheBugTracker.Models;
 using TheBugTracker.Services.Interfaces;
 
 namespace TheBugTracker.Services
 {
     public class BTTicketService : IBTTicketService
     {
-        public Task AddTicketAsync(Ticket? ticket)
+        private readonly ApplicationDbContext _context;
+
+        public BTTicketService(ApplicationDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+
+        public async Task AddTicketAsync(Ticket? ticket)
+        {
+            if (ticket == null) { return; }
+
+            try
+            {
+                //saves it to database
+                _context.Add(ticket!);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public Task AddTicketAttachmentAsync(TicketAttachment? ticketAttachment)
