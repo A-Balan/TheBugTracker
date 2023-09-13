@@ -7,7 +7,6 @@ namespace TheBugTracker.Services.Interfaces
         public Task AddProjectAsync(Project project);
         public Task<bool> AddMemberToProjectAsync(BTUser? member, int? projectId);
         public Task AddMembersToProjectAsync(IEnumerable<string>? userIds, int? projectId, int? companyId);
-
         public Task<bool> AddProjectManagerAsync(string? userId, int? projectId);
         public Task ArchiveProjectAsync(Project? project, int? companyId);
         public Task<List<Project>> GetAllProjectsByCompanyIdAsync(int? companyId);

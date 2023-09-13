@@ -1,12 +1,19 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Net.Sockets;
-
+using TheBugTracker.Extensions;
+using TheBugTracker.Services;
 namespace TheBugTracker.Models
 {
     public class TicketAttachment
     {
+        [NotMapped]
+        [DisplayName("Select a file")]
+        [DataType(DataType.Upload)]
+        [MaxFileSize(1024 * 1024)]
+        [AllowedExtensions(new string[] { ".jpg", ".png", ".doc", ".docx", ".xls", ".xlsx", ".pdf" })]
+        public IFormFile FormFile { get; set; }
+
         private DateTime _created;
         public int Id { get; set; }
         public string? Description { get; set; }
@@ -19,8 +26,8 @@ namespace TheBugTracker.Models
         [Required]
         public string? BTUserId { get; set; }
 
-        [NotMapped]
-        public IFormFile? FormFile { get; set; }
+        public string? FileName { get; set; }
+
         public byte[]? FileData { get; set; }
 
         public string? FileType { get; set; }

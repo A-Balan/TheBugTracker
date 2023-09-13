@@ -6,7 +6,6 @@ namespace TheBugTracker.Services.Interfaces
     {
         public Task AddTicketAsync(Ticket? ticket);
         public Task AssignTicketAsync(int? ticketId, string? userId);
-        public Task AddTicketAttachmentAsync(TicketAttachment? ticketAttachment);
         public Task AddTicketCommentAsync(TicketComment? ticketComment);
 
         public Task UpdateTicketAsync(Ticket? ticket);
@@ -24,6 +23,9 @@ namespace TheBugTracker.Services.Interfaces
         public Task ArchiveTicketAsync(Ticket? ticket);
         public Task RestoreTicketAsync(Ticket? ticket);
 
+        public Task<List<Ticket>> GetTicketsByProjectIdAsync(int? projectId);
+        public Task AddTicketAttachmentAsync(TicketAttachment ticketAttachment);
+		public Task<TicketAttachment> GetTicketAttachmentByIdAsync(int ticketAttachmentId);
 
-    }
+	}
 }

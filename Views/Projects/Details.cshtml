@@ -1,4 +1,5 @@
-﻿@model TheBugTracker.Models.Project
+﻿@using System.Reflection;
+@model TheBugTracker.Models.Project
 
 <h1>Details</h1>
 
@@ -97,14 +98,56 @@
                             <div class="table-responsive" style="overflow-y:auto;height:600px;">
                                 <table class="table table-hover">
                                     <thead class="">
-                                        <tr>
-                                            @* Table header *@
-                                            [Ticket Table header]
-                                        </tr>
+                                       Tickets
                                     </thead>
                                     <tbody>
-                                        @* Table body *@
-                                        [Ticket Table body]
+                                       
+                                            @foreach (Ticket ticket in Model.Tickets)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => ticket.Title)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => ticket.Description)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => ticket.Created)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => ticket.Updated)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => ticket.Archived)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => ticket.ArchivedByProject)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => ticket.Project.Description)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => ticket.TicketType.Name)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => ticket.TicketPriority.Name)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => ticket.TicketStatus.Name)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => ticket.DeveloperUser.FullName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => ticket.SubmitterUser.FullName)
+                                                    </td>
+                                                    <td>
+                                                        <a asp-action="Edit" asp-route-id="@ticket.Id">Edit</a> |
+                                                        <a asp-action="Details" asp-route-id="@ticket.Id">Details</a> |
+                                                        <a asp-action="Delete" asp-route-id="@ticket.Id">Delete</a>
+                                                    </td>
+                                                </tr>
+                                                }
                                     </tbody>
                                 </table>
                             </div>
@@ -116,8 +159,7 @@
             </div>
         </div>
     </div>
-</div>    ViewData["Title"] = "Details";
-}
+</div>   
 
 <h1>Details</h1>
 

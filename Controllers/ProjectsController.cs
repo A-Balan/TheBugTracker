@@ -18,12 +18,14 @@ namespace TheBugTracker.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<BTUser> _userManager;
         private readonly IBTFileService _bTFileService;
+        private readonly IBTTicketService _btTicketService;
 
-        public ProjectsController(ApplicationDbContext context, UserManager<BTUser> userManager, IBTFileService bTFileService)
+        public ProjectsController(ApplicationDbContext context, UserManager<BTUser> userManager, IBTFileService bTFileService, IBTTicketService btTicketService)
         {
             _context = context;
             _userManager = userManager;
             _bTFileService = bTFileService;
+            _btTicketService = btTicketService;
         }
 
         // GET: Projects
@@ -52,6 +54,8 @@ namespace TheBugTracker.Controllers
 				.Include(p => p.Company)
 				.Include(p => p.ProjectPriority)
 				.FirstOrDefaultAsync(m => m.Id == id);
+
+            ViewData["Tickets"] = await _btTicketService.GetTicketsByProjectIdAsync(project?.Id);
 
 
 			if (project == null)
