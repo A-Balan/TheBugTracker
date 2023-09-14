@@ -1,7 +1,13 @@
-﻿@using System.Reflection;
-@model TheBugTracker.Models.Project
+﻿@model TheBugTracker.Models.Project
+@inject IBTProjectService _ProjectService
+@inject IBTFileService _FileService
+@inject UserManager<BTUser> _UserManager
 
 <h1>Details</h1>
+@{
+    BTUser? btUser = await _UserManager.GetUserAsync(User);
+    BTUser? projectManager = await _ProjectService.GetProjectManagerAsync(Model.Id)!;
+}
 
 <div>
     <div class="container-fluid">
@@ -50,7 +56,7 @@
                         <div class="body" style="overflow-y:auto;height:300px;">
                             [Project Manager]
                             @* if() logic for Avatar/Default etc *@
-
+                            @((await _ProjectService.GetProjectManagerAsync(Model.Id)).FullName);
                         </div>
                     </div>
                 </div>
@@ -61,12 +67,22 @@
                         <div class="header">
                             <h2>Project Team</h2>
                             <hr />
+                            <span><a class="btn btn-sm alert-primary" asp-action="AssignProjectMembers" asp-route-id="@Model.Id">Manage Team</a></span>
                         </div>
                         <div class="body" style="overflow-y:auto;height:300px;">
                             <ul class="right_chat list-unstyled mb-0">
 
                                 [Project Members]
                                 @* Logic for avatars *@
+                                @foreach (BTUser member in Model.Members)
+                                {
+                                    <li>
+                                        <div>
+                                            <span class="">@member.FullName</span>
+                                            <span class="" style="font-size:x-small">[@(string.Join(",", await _UserManager.GetRolesAsync(member)))]</span>
+                                        </div>
+                                    </li>
+                                }
                             </ul>
 
                         </div>

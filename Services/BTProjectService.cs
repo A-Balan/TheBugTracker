@@ -1,18 +1,79 @@
-﻿using TheBugTracker.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using TheBugTracker.Data;
+using TheBugTracker.Models;
+using TheBugTracker.Models.Enums;
 using TheBugTracker.Services.Interfaces;
 
 namespace TheBugTracker.Services
 {
     public class BTProjectService : IBTProjectService
     {
-        public Task AddMembersToProjectAsync(IEnumerable<string>? userIds, int? projectId, int? companyId)
+		private readonly ApplicationDbContext _context;
+        private readonly IBTRolesService _rolesService;
+
+		public BTProjectService(ApplicationDbContext context, IBTRolesService rolesService)
+		{
+			_context = context;
+			_rolesService = rolesService;
+		}
+		public async Task AddMembersToProjectAsync(IEnumerable<string>? userIds, int? projectId, int? companyId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (userIds != null)
+                {
+                    Project? project = await GetProjectByIdAsync(projectId, companyId);
+                    foreach (string userId in userIds)
+                    {
+                        BTUser? bTUser = await _context.Users.FindAsync(userId);
+                        if (project != null && bTUser != null)
+                        {
+                            bool IsOnProject = project.Members.Any(m=>m.Id == userId);
+                            if(!IsOnProject)
+                            {
+                                project.Members.Add(bTUser);
+                            }
+                            else
+                            {
+                                continue;
+                            }
+                        }
+                    }
+                }
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
-        public Task<bool> AddMemberToProjectAsync(BTUser? member, int? projectId)
+        public async Task<bool> AddMemberToProjectAsync(BTUser? member, int? projectId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (member != null && projectId != null)
+                {
+                    Project? project = await GetProjectByIdAsync(projectId, member.CompanyId);
+                    if (project != null)
+                    {
+                        //proj instance must inlcude members to do following
+                        bool IsOnProject = project.Members.Any(m => m.Id == member.Id);
+
+                        if(!IsOnProject)
+                        {
+                            project.Members.Add(member);
+                            await _context.SaveChangesAsync();
+                            return true;
+                        }
+                    }
+                } return false;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public Task AddProjectAsync(Project project)
@@ -20,9 +81,37 @@ namespace TheBugTracker.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> AddProjectManagerAsync(string? userId, int? projectId)
+        public async Task<bool> AddProjectManagerAsync(string? userId, int? projectId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (userId != null && projectId != null)
+                {
+                    BTUser? currentPM = await GetProjectManagerAsync(projectId);
+                    BTUser? selectedPM = await _context.Users.FindAsync(userId);
+                  
+                    //remove current pm
+                    if (currentPM != null)
+                    {
+                        await RemoveProjectManagerAsync(projectId);
+                    }
+                    //add new PM
+                    try
+                    {
+                        await AddMemberToProjectAsync(selectedPM, projectId);
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public Task ArchiveProjectAsync(Project? project, int? companyId)
@@ -30,9 +119,21 @@ namespace TheBugTracker.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<Project>> GetAllProjectsByCompanyIdAsync(int? companyId)
+        public async Task<List<Project>> GetAllProjectsByCompanyIdAsync(int? companyId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<Project> projects = await _context.Projects.Where(p=>p.CompanyId == companyId).Include(p=>p.Members)
+                    .Include(p=>p.ProjectPriority)
+                    .Include(p=>p.Tickets)
+                    .ToListAsync();
+                return projects;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public Task<List<Project>> GetArchivedProjectsByCompanyIdAsync(int? companyId)
@@ -40,19 +141,86 @@ namespace TheBugTracker.Services
             throw new NotImplementedException();
         }
 
-        public Task<Project> GetProjectByIdAsync(int? projectId, int? companyId)
+        public async Task<Project> GetProjectByIdAsync(int? projectId, int? companyId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Project? project = new();
+                if (projectId != null && companyId != null)
+                {
+                    project = await _context.Projects
+                        .Include(p=>p.ProjectPriority)
+                        .Include(p => p.Company)
+                        .Include(p => p.Members)
+                        .Include(p => p.Tickets)
+                        .ThenInclude(t=>t.Comments)
+                        .ThenInclude(c=>c.User)
+                        .Include(p=>p.Tickets)
+                        .ThenInclude(t=>t.Attachments)
+                        .Include(p=>p.Tickets)
+                        .ThenInclude(t =>t.History)
+                        .FirstOrDefaultAsync(p=>p.Id == projectId && p.CompanyId == companyId);
+                }
+                return project!;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
-        public Task<BTUser> GetProjectManagerAsync(int? projectId)
+        public async Task<BTUser> GetProjectManagerAsync(int? projectId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Project? project = await _context.Projects.Include(p=>p.Members).FirstOrDefaultAsync(p=>p.Id == projectId);
+                if(project != null)
+                    foreach (BTUser member in project.Members)
+                    {
+                        if  (await _rolesService.IsUserInRoleAsync(member, nameof(BTRoles.ProjectManager)))
+                        {
+                            return member;
+                        }
+                    }
+                return null!;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
-        public Task<List<BTUser>> GetProjectMembersByRoleAsync(int? projectId, string? roleName, int? companyId)
+        public async Task<List<BTUser>> GetProjectMembersByRoleAsync(int? projectId, string? roleName, int? companyId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<BTUser> members = new();
+                if (projectId != null && companyId != null && !string.IsNullOrEmpty(roleName))
+                {
+                    Project? project = await GetProjectByIdAsync(projectId, companyId);
+                    if (project != null)
+                    {
+                        foreach (BTUser member in project.Members)
+                        {
+                            if (await _rolesService.IsUserInRoleAsync(member, roleName))
+                            {
+                                members.Add(member);
+                            }
+                        }
+                        //for testing purposes
+                        List<string> developers = (await _rolesService.GetUsersInRoleAsync(roleName, companyId))?.Select(u => u.Id).ToList()!;
+                        List<BTUser> users = project.Members.Where(m => developers.Contains(m.Id)).ToList();
+                    }
+                }
+                return members;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public Task<IEnumerable<ProjectPriority>> GetProjectPrioritiesAsync()
@@ -65,19 +233,85 @@ namespace TheBugTracker.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> RemoveMemberFromProjectAsync(BTUser? member, int? projectId)
+        public async Task<bool> RemoveMemberFromProjectAsync(BTUser? member, int? projectId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (member != null && projectId != null)
+                {
+                    Project? project = await GetProjectByIdAsync(projectId, member.CompanyId);
+                    if (project != null)
+                    {
+
+                        bool IsOnProject = project.Members.Any(m => m.Id == member.Id);
+                        if (IsOnProject)
+                        {
+                            project.Members.Remove(member);
+                            await _context.SaveChangesAsync();
+                            return true;
+                        }
+                    }
+                } return false;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
-        public Task RemoveMembersFromProjectAsync(int? projectId, int? companyId)
+        public async Task RemoveMembersFromProjectAsync(int? projectId, int? companyId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Project? project = await GetProjectByIdAsync(projectId, companyId);
+
+                if (project != null)
+                {
+                    foreach (var member in project.Members)
+                    {
+                        if (!await _rolesService.IsUserInRoleAsync(member, nameof(BTRoles.ProjectManager)))
+                        {
+                            project.Members.Remove(member);
+                        }
+                    }
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
-        public Task RemoveProjectManagerAsync(int? projectId)
+        public async Task RemoveProjectManagerAsync(int? projectId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (projectId != null)
+                {
+                    Project? project = await _context.Projects.Include(p => p.Members).FirstOrDefaultAsync(p => p.Id == projectId);
+                   
+                    if (project != null)
+                    {
+                        foreach (BTUser member in project!.Members)
+                        {
+                            if (await _rolesService.IsUserInRoleAsync(member, nameof(BTRoles.ProjectManager)))
+                            {
+                                //remove BTUser from project
+                                await RemoveMemberFromProjectAsync(member, projectId);
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public Task RestoreProjectAsync(Project? project, int? companyId)

@@ -9,7 +9,7 @@ namespace TheBugTracker.Services
     public class BTRolesService : IBTRolesService
     {
         private readonly ApplicationDbContext _context;
-        UserManager<BTUser> _userManager;
+        private readonly UserManager<BTUser> _userManager;
 
         public BTRolesService(ApplicationDbContext context, UserManager<BTUser> userManager)
         {
@@ -72,7 +72,7 @@ namespace TheBugTracker.Services
             {
                 List<BTUser> result = new();
                 List<BTUser> users = new();
-                if (string.IsNullOrEmpty(roleName) && companyId != null)
+                if (!string.IsNullOrEmpty(roleName) && companyId != null)
                 {
                     users = (await _userManager.GetUsersInRoleAsync(roleName)).ToList();
                     result = users.Where(u => u.CompanyId == companyId).ToList();

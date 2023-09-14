@@ -2,42 +2,93 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TheBugTracker.Data;
 using TheBugTracker.Models;
+using TheBugTracker.Models.Enums;
+using TheBugTracker.Models.ViewModels;
 using TheBugTracker.Services;
 using TheBugTracker.Services.Interfaces;
 
 namespace TheBugTracker.Controllers
 {
-    public class TicketsController : Controller
+    [Authorize]
+    public class TicketsController : BTBaseController
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<BTUser> _userManager;
         private readonly IBTTicketService _ticketService;
         private readonly IBTFileService _fileService;
+        private readonly IBTProjectService _projectService;
 
-        public TicketsController(ApplicationDbContext context, UserManager<BTUser> userManager, IBTTicketService ticketService, IBTFileService fileService )
+        public TicketsController(ApplicationDbContext context, UserManager<BTUser> userManager, IBTTicketService ticketService, IBTFileService fileService, IBTProjectService projectService )
         {
             _context = context;
             _userManager = userManager;
             _ticketService = ticketService;
             _fileService = fileService;
-
+            _projectService = projectService;
         
         }
 
         // GET: Tickets
+        [Authorize]
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Tickets.Include(t => t.DeveloperUser).Include(t => t.Project).Include(t => t.SubmitterUser).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
-            return View(await applicationDbContext.ToListAsync());
+            IEnumerable<Ticket> tickets = await _ticketService.GetAllTicketsByCompanyIdAsync(_companyId);
+            return View(tickets);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AssignTicket(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            AssignTicketViewModel viewModel = new();
+
+
+            viewModel.Ticket = await _ticketService.GetTicketByIdAsync(id, _companyId);
+            string? currentDeveloper = viewModel.Ticket?.DeveloperUserId;
+                viewModel.Developers = new SelectList(await _projectService.GetProjectMembersByRoleAsync(viewModel.Ticket?.ProjectId,
+                    nameof(BTRoles.Developer), _companyId), "Id", "FullName",
+                    currentDeveloper);
+            
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignTicket(AssignTicketViewModel viewModel)
+        {
+            if(viewModel.DeveloperId != null && viewModel.Ticket?.Id != null)
+            {
+                try
+                {
+                    await _ticketService.AssignTicketAsync(viewModel.Ticket.Id, viewModel.DeveloperId);
+                    return RedirectToAction(nameof(Details), new { id = viewModel.Ticket.Id });
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+                //todo: add history
+                //todo: add notification
+            }
+
+            return View();
         }
 
         // GET: Tickets/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Tickets == null)
@@ -66,6 +117,7 @@ namespace TheBugTracker.Controllers
         }
 
         // GET: Tickets/Create
+        [Authorize]
         public IActionResult Create()
         {
             ViewData["DeveloperUserId"] = new SelectList(_context.Users, "Id", "FullName");
@@ -166,8 +218,9 @@ namespace TheBugTracker.Controllers
             return RedirectToAction("Details", new { id = ticketComment.TicketId });
         }
 
-		// GET: Tickets/Edit/5
-		public async Task<IActionResult> Edit(int? id)
+        // GET: Tickets/Edit/5
+        [Authorize]
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Tickets == null)
             {
