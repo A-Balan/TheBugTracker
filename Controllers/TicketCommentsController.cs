@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +15,12 @@ namespace TheBugTracker.Controllers
     public class TicketCommentsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<BTUser> _userManager;
 
-        public TicketCommentsController(ApplicationDbContext context)
+        public TicketCommentsController(ApplicationDbContext context, UserManager<BTUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: TicketComments
@@ -49,8 +53,8 @@ namespace TheBugTracker.Controllers
         // GET: TicketComments/Create
         public IActionResult Create()
         {
-            ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "Description");
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            //ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "Description");
+            //ViewData["UserId"] = new SelectList(_context.Users, "Id", "Content");
             return View();
         }
 
@@ -59,16 +63,25 @@ namespace TheBugTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Comment,Created,TicketId,UserId")] TicketComment ticketComment)
+        public async Task<IActionResult> Create([Bind("Comment,TicketId")] TicketComment ticketComment)
         {
+            ModelState.Remove("UserId");
+
             if (ModelState.IsValid)
             {
-                _context.Add(ticketComment);
+                string userId = _userManager.GetUserId(User)!;
+                ticketComment.UserId = userId;
+                ticketComment.Created = DateTime.Now;
+
+				//Remove CKEditor"<p></p>"tags
+				ticketComment.Comment = Regex.Replace(ticketComment.Comment!, @"<[^>]*>", string.Empty);
+
+				_context.Add(ticketComment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Tickets");
             }
-            ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "Description", ticketComment.TicketId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", ticketComment.UserId);
+           
+           
             return View(ticketComment);
         }
 
@@ -86,7 +99,7 @@ namespace TheBugTracker.Controllers
                 return NotFound();
             }
             ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "Description", ticketComment.TicketId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", ticketComment.UserId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Content", ticketComment.UserId);
             return View(ticketComment);
         }
 
@@ -95,7 +108,7 @@ namespace TheBugTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Comment,Created,TicketId,UserId")] TicketComment ticketComment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Comment,Created,Updated,UpdateReason,TicketId,UserId")] TicketComment ticketComment)
         {
             if (id != ticketComment.Id)
             {
@@ -106,7 +119,9 @@ namespace TheBugTracker.Controllers
             {
                 try
                 {
-                    _context.Update(ticketComment);
+					ticketComment.Updated = DateTime.Now;
+
+					_context.Update(ticketComment);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -123,7 +138,7 @@ namespace TheBugTracker.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "Description", ticketComment.TicketId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", ticketComment.UserId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Content", ticketComment.UserId);
             return View(ticketComment);
         }
 

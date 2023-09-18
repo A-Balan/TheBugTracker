@@ -125,7 +125,7 @@ namespace TheBugTracker.Services
                 if (ticketId != null && companyId != null)
                 {
                    ticket = await _context.Tickets
-                        .Where(t => t.Project!.CompanyId == companyId && t.Archived == false)
+                        .Where(t => t.Project!.CompanyId == companyId && t.Archived == false  && t.ArchivedByProject == false)
                            .Include(t => t.Project)
                                   .ThenInclude(p => p!.Company)
                                   .Include(t => t.DeveloperUser)

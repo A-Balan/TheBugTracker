@@ -327,6 +327,48 @@ namespace TheBugTracker.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // GET: Tickets/Delete/5
+        public async Task<IActionResult> Restore(int? id)
+        {
+            if (id == null || _context.Tickets == null)
+            {
+                return NotFound();
+            }
+
+            var ticket = await _context.Tickets
+                .Include(t => t.DeveloperUser)
+                .Include(t => t.Project)
+                .Include(t => t.SubmitterUser)
+                .Include(t => t.TicketPriority)
+                .Include(t => t.TicketStatus)
+                .Include(t => t.TicketType)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+            return View(ticket);
+        }
+
+        // POST: Tickets/Delete/5
+        [HttpPost, ActionName("Restore")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RestoreConfirmed(int id)
+        {
+            if (_context.Tickets == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Tickets'  is null.");
+            }
+            var ticket = await _context.Tickets.FindAsync(id);
+            if (ticket != null)
+            {
+                ticket.Archived = false;
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
         private bool TicketExists(int id)
         {
           return (_context.Tickets?.Any(e => e.Id == id)).GetValueOrDefault();

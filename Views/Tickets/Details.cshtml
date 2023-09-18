@@ -62,6 +62,87 @@
 								<hr />
 								<h6>Comments</h6>
 									@*Loop to show comments made for the Ticket*@
+								<!-- Start Comment Form Area  -->
+								<div class="axil-comment-area">
+
+									<!-- Start Comment Respond  -->
+									@if (User.Identity!.IsAuthenticated)
+									{
+										<div class="comment-respond">
+											<h4 class="title">Post a comment</h4>
+
+											<form asp-action="Create" asp-controller="TicketComments">
+												<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+												<input type="hidden" asp-for="Id" name="Ticket" />
+												<div class="row row-md-10">
+													<div class="col-12">
+														<div class="form-group">
+															<label for="editor">Leave a Reply</label>
+															<textarea id="editor" class="form-control" name="Comment"></textarea>
+														</div>
+													</div>
+												</div>
+												<div class="col-lg-12">
+													<div class="form-submit cerchio">
+														<input name="submit" type="submit" id="submit" class="axil-button button-rounded" value="Post Comment">
+													</div>
+												</div>
+											</form>
+										</div>
+									}
+									else
+									{
+										<div class="axil-total-comment-post">
+											<div class="add-comment-button cerchio">
+												<a class="axil-button button-rounded" asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Url.Action("Details", "Tickets", new { id = Model.Id })" tabindex="0"><span>Login to Add Your Comment</span></a>
+											</div>
+										</div>
+									}
+									<!-- End Comment Respond  -->
+									<!-- Start Comment Area  -->
+									<div class="axil-comment-area">
+										<h4 class="title"> </h4>
+										<ul class="comment-list">
+
+											@foreach (TicketComment comment in Model.Comments)
+											{
+												<!-- Start Single Comment  -->
+												<li class="comment">
+													<div class="comment-body">
+														<div class="single-comment">
+															<div class="comment-img">
+																
+															</div>
+															<div class="comment-inner">
+																<h6 class="commenter">
+																	<a class="hover-flip-item-wrapper" href="#">
+																		<span class="hover-flip-item">
+																			<span data-text="@comment.User?.FullName">@comment.User?.FullName</span>
+																		</span>
+																	</a>
+																</h6>
+																<div class="comment-meta">
+																	<div class="time-spent">@comment.Created.ToString("MMM dd, yyyy")</div>
+																	<div class="reply-edit">
+																	</div>
+																</div>
+																<div class="comment-text">
+																	<p class="b2">
+																		@Html.Raw(@comment.Comment)
+																	</p>
+																</div>
+															</div>
+														</div>
+													</div>
+												</li>
+												<!-- End Single Comment  -->
+											}
+
+										</ul>
+									</div>
+									<!-- End Comment Area  -->
+								</div>
+								<!-- End Comment Form Area  -->
 							</div>
 							<div class="card-footer">
 							</div>
