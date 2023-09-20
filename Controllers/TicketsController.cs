@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -8,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TheBugTracker.Data;
+using TheBugTracker.Extensions;
 using TheBugTracker.Models;
 using TheBugTracker.Models.Enums;
 using TheBugTracker.Models.ViewModels;
@@ -24,14 +27,16 @@ namespace TheBugTracker.Controllers
         private readonly IBTTicketService _ticketService;
         private readonly IBTFileService _fileService;
         private readonly IBTProjectService _projectService;
+        private readonly IBTTicketHistoryService _historyService;
 
-        public TicketsController(ApplicationDbContext context, UserManager<BTUser> userManager, IBTTicketService ticketService, IBTFileService fileService, IBTProjectService projectService )
+        public TicketsController(ApplicationDbContext context, UserManager<BTUser> userManager, IBTTicketService ticketService, IBTFileService fileService, IBTProjectService projectService, IBTTicketHistoryService historyService)
         {
             _context = context;
             _userManager = userManager;
             _ticketService = ticketService;
             _fileService = fileService;
             _projectService = projectService;
+            _historyService = historyService;
         
         }
 
@@ -70,9 +75,16 @@ namespace TheBugTracker.Controllers
         {
             if(viewModel.DeveloperId != null && viewModel.Ticket?.Id != null)
             {
+                string? userId = _userManager.GetUserId(User);
+
+                //get AsNoTracking
+                Ticket? oldTicket = await _ticketService.GetTicketAsNoTrackingAsync(viewModel.Ticket?.Id, _companyId);
+
+                //ticket assignment 
                 try
                 {
                     await _ticketService.AssignTicketAsync(viewModel.Ticket.Id, viewModel.DeveloperId);
+
                     return RedirectToAction(nameof(Details), new { id = viewModel.Ticket.Id });
                 }
                 catch (Exception)
@@ -80,7 +92,11 @@ namespace TheBugTracker.Controllers
 
                     throw;
                 }
+
                 //todo: add history
+                Ticket? newTicket = await _ticketService.GetTicketAsNoTrackingAsync(viewModel.Ticket?.Id, _companyId);
+                await _historyService.AddHistoryAsync(oldTicket, newTicket, userId);
+
                 //todo: add notification
             }
 
@@ -146,8 +162,23 @@ namespace TheBugTracker.Controllers
                 ticket.SubmitterUserId = _userManager.GetUserId(User);
                 _context.Add(ticket);
                 await _context.SaveChangesAsync();
+
+                //call ticket service
+                await  _ticketService.AddTicketAsync(ticket);
+
+                //add history record
+                int companyId = User.Identity!.GetCompanyId();
+                Ticket newTicket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id, companyId);
+
+                var userId = _userManager.GetUserId(User);
+
+                await _historyService.AddHistoryAsync(null!, newTicket, userId);
+
                 return RedirectToAction(nameof(Index));
             }
+
+           
+ 
             ViewData["DeveloperUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.DeveloperUserId);
             ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Name", ticket.ProjectId);
             ViewData["SubmitterUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.SubmitterUserId);
@@ -174,14 +205,17 @@ namespace TheBugTracker.Controllers
                 ticketAttachment.Created = DateTime.Now;
                 ticketAttachment.BTUserId = _userManager.GetUserId(User);
 
+
                 await _ticketService.AddTicketAttachmentAsync(ticketAttachment);
                 statusMessage = "Success: New attachment added to Ticket.";
+
             }
             else
             {
                 statusMessage = "Error: Invalid data.";
 
             }
+
 
             return RedirectToAction("Details", new { id = ticketAttachment.TicketId, message = statusMessage });
         }
@@ -259,8 +293,18 @@ namespace TheBugTracker.Controllers
             {
                 try
                 {
+                   
+                    string userId = _userManager.GetUserId(User);
+                    Ticket? oldTicket =await  _ticketService.GetTicketAsNoTrackingAsync(ticket.Id, _companyId);
+
+                    //the update code is here
                     _context.Update(ticket);
                     await _context.SaveChangesAsync();
+
+                    //add history
+                    Ticket newTicket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id, _companyId);
+                    await _historyService.AddHistoryAsync(oldTicket, newTicket, userId);
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {

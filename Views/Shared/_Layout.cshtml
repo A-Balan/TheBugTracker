@@ -30,6 +30,10 @@
                             </li>
 
                         }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Create" asp-controller="Invites">Company Invite</a>
+                        }
 
                     </ul>
                     <partial name="_LoginPartial" />

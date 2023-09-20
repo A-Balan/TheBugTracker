@@ -27,5 +27,5 @@ namespace TheBugTracker.Services.Interfaces
         public Task AddTicketAttachmentAsync(TicketAttachment ticketAttachment);
 		public Task<TicketAttachment> GetTicketAttachmentByIdAsync(int ticketAttachmentId);
 
-	}
+    }
 }

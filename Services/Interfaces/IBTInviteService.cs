@@ -4,7 +4,7 @@ namespace TheBugTracker.Services.Interfaces
 {
     public interface IBTInviteService
     {
-        public Task<bool> AcceptInviteAsync(Guid? token, string? userId);
+        public Task<bool> AcceptInviteAsync(Guid? token, string? userId, int companyId);
 
         public Task AddNewInviteAsync(Invite? invite);
 
