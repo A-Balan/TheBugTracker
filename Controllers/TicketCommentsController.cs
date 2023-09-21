@@ -78,7 +78,7 @@ namespace TheBugTracker.Controllers
 
 				_context.Add(ticketComment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Details", "Tickets");
+                return RedirectToAction("Details", "Tickets", new {id = ticketComment.TicketId});
             }
            
            

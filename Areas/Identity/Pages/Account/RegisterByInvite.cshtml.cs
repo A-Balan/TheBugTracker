@@ -187,7 +187,7 @@ namespace TheBugTracker.Areas.Identity.Pages.Account
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     // Add new user to the designated project
-                    await _projectService.AddUserToProjectAsync(userId, Input.ProjectId);
+                    await _projectService.AddMemberToProjectAsync(user, Input.ProjectId);
 
                     // Add user to default role
                     await _userManager.AddToRoleAsync(user, nameof(BTRoles.Submitter));

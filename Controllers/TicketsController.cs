@@ -120,6 +120,8 @@ namespace TheBugTracker.Controllers
                 .Include(t => t.TicketStatus)
                 .Include(t => t.TicketType)
                 .Include(t => t.Attachments)
+                .Include(t => t.History)
+                .Include(t => t.Comments).ThenInclude(c=>c.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
 
@@ -280,7 +282,7 @@ namespace TheBugTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Title,Description,Updated,Archived,ProjectId,TicketTypeId,TicketStatusId,TicketPriorityId,DeveloperUserId")] Ticket ticket)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Updated,Archived,ProjectId,TicketTypeId,TicketStatusId,TicketPriorityId,DeveloperUserId,SubmitterUserId")] Ticket ticket)
         {
             if (id != ticket.Id)
             {

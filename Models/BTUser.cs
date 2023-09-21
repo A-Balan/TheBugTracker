@@ -11,7 +11,7 @@ namespace TheBugTracker.Models
         [Display(Name = "First Name")]
         [StringLength(100, ErrorMessage = "The {0} must be at most {1} characters long.")]
         public string? FirstName { get; set; }
-
+        
         [Required]
         [Display(Name = "Last Name")]
         [StringLength(100, ErrorMessage = "The {0} must be at most {1} characters long.")]

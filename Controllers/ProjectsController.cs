@@ -64,6 +64,9 @@ namespace TheBugTracker.Controllers
 				.Include(p => p.Company)
                 .Include(p=> p.Members)
 				.Include(p => p.ProjectPriority)
+                .Include(p=>p.Tickets)
+                .ThenInclude(t=>t.History)
+                .ThenInclude(th=>th.User)
 				.FirstOrDefaultAsync(m => m.Id == id);
 
             ViewData["Tickets"] = await _btTicketService.GetTicketsByProjectIdAsync(project?.Id);
