@@ -5,10 +5,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-TheBugTracker-91546c9b-60a3-4cc9-bce7-53d1e5965377</UserSecretsId>
-	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
 	  <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
-	  <InveriantGlobalization>true</InveriantGlobalization>
   </PropertyGroup>
 
   <ItemGroup>

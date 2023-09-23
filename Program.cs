@@ -13,10 +13,13 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //  options.UseNpgsql(connectionString));
 var connectionString = DataUtility.GetConnectionString(builder.Configuration) ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(connectionString, o => o.MigrationsHistoryTable(tableName: "_EFMigrationHistory",
-    schema: "TheBugTracker")));
+    options.UseNpgsql(connectionString));
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+builder.Services.AddDefaultIdentity<BTUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddControllersWithViews();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
