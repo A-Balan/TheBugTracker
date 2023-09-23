@@ -8,6 +8,7 @@
 	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
 	  <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
+	  <InveriantGlobalization>true</InveriantGlobalization>
   </PropertyGroup>
 
   <ItemGroup>
