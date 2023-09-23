@@ -9,9 +9,15 @@ using TheBugTracker.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+//var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+//builder.Services.AddDbContext<ApplicationDbContext>(options =>
+//  options.UseNpgsql(connectionString));
+var connectionString = DataUtility.GetConnectionString(builder.Configuration) ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(connectionString));
+    options.UseNpgsql(connectionString, o => o.MigrationsHistoryTable(tableName: "__EFMigrationHistory",
+    schema: "TheBugTracker")));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 
