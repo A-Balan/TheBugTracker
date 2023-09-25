@@ -1,11 +1,16 @@
 ﻿@inject UserManager<BTUser> _UserManager
 
 @{
-    var fullName = (await _UserManager.GetUserAsync(User)).FullName;
+    string fullName = string.Empty;
 
-    if (fullName == null)
+    if (User.Identity!.IsAuthenticated)
     {
-        fullName = "Guest";
+        fullName = (await _UserManager.GetUserAsync(User))?.FullName;
+
+        if (fullName == null)
+        {
+            fullName = "Guest";
+        }
     }
 }
 
