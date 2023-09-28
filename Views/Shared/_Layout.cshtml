@@ -84,7 +84,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Gogi - Admin and Dashboard Template</title>
     <title>@ViewData["Title"] - TheBugTracker</title>
 
     <!-- Favicon -->
@@ -165,39 +164,32 @@
                                              class="rounded-circle"
                                              alt="avatar">
                                     </figure>
-                                    <span class="ml-2 d-sm-inline d-none">@btUser?.FullName</span>
+                                    <span class="ml-2 d-sm-inline d-none">@(btUser != null ? btUser.FullName : "Guest")</span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-big">
                                     <div class="text-center py-4">
                                         <figure class="avatar avatar-lg mb-3 border-0">
-                                            <img src="../../assets/media/image/user/man_avatar3.jpg"
+                                            <img src="@_FileService.ConvertByteArrayToFile(imageData, imageType, DefaultImage.BTUserImage)"
                                                  class="rounded-circle" alt="image">
                                         </figure>
-                                        <h5 class="text-center">Bony Gidden</h5>
-                                        <div class="mb-3 small text-center text-muted">bonygidden</div>
-                                        <a href="#" class="btn btn-outline-light btn-rounded">Manage Your Account</a>
+                                        <h5 class="text-center">@(btUser != null ? btUser.FullName : "Welcome")</h5>
+                                        <div class="mb-3 small text-center text-muted">@(btUser != null ? btUser.Email : "Please log in.")</div>
+                                        <partial name="_LoginPartial" />
                                     </div>
-                                    <div class="list-group">
-                                        <a href="profile.html" class="list-group-item">View Profile</a>
-                                        <a href="http://bifor.laborasyon.com/login" class="list-group-item text-danger"
-                                           data-sidebar-target="#settings">Sign Out!</a>
-                                    </div>
-                                    <div class="p-4">
-                                        <div class="mb-4">
-                                            <h6 class="d-flex justify-content-between">
-                                                Storage
-                                                <span>%25</span>
-                                            </h6>
-                                            <div class="progress" style="height: 5px;">
-                                                <div class="progress-bar bg-success-gradient" role="progressbar" style="width: 40%;"
-                                                     aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                                    @{
+                                        if (btUser != null)
+                                        {
+                                            <div class="list-group">
+                                                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("LandingPage", "Home", new { area = "" })">
+
+                                                    <!--<a class="list-group-item text-danger"
+                                                      data-sidebar-target="#settings">Sign Out!</a> -->
+                                                    <button type="submit" class="list-group-item text-danger">Logout</button>
+
+                                                </form>
                                             </div>
-                                        </div>
-                                        <hr class="mb-3">
-                                        <p class="small mb-0">
-                                            <a href="#">Privacy policy</a>
-                                        </p>
-                                    </div>
+                                        }
+                                    }
                                 </div>
                             </li>
                         </ul>
@@ -240,7 +232,6 @@
                                     <i class="ti-agenda"></i>
                                 </span>
                                 <span>Projects</span>
-                                <span class="badge badge-danger">5</span>
                             </a>
                         </li>
                         <li>
@@ -257,7 +248,6 @@
                                     <i data-feather="check-square"></i>
                                 </span>
                                 <span>Manage Users</span>
-                                <span class="badge badge-warning">2</span>
                             </a>
                         </li>
                        

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using TheBugTracker.Models;
 
@@ -13,6 +14,12 @@ namespace TheBugTracker.Controllers
             _logger = logger;
         }
 
+        public IActionResult LandingPage()
+        {
+            return View();
+        }
+
+        [Authorize]
         public IActionResult Index()
         {
             return View();

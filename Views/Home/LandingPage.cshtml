@@ -1,0 +1,58 @@
+﻿@page
+@using TheBugTracker.Areas.Identity.Pages.Account;
+@model LoginModel
+
+<!-- Preloader -->
+<div class="preloader">
+    <div class="preloader-icon"></div>
+    <span>Loading...</span>
+</div>
+<!-- Content body -->
+<div class="content-body">
+    <!-- Content -->
+    <div class="content ">
+
+        <div class="page-header">
+            <div>
+                <h3>Demo Pages</h3>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Welcome to the bug tracker!</h6>
+                        <p>
+                            Please feel free to demo the functionalities offered by this bug tracker using any one of the links below:
+                        </p>
+                        <div class="mb-1 text-center">
+                            <form class="" id="account" method="post">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-8 btn-block">
+                                            <button type="submit" style="width:inherit;height:min-content" class="btn btn-primary p-10 m-2" name="demoEmail" value="DemoAdminEmail">Demo Admin</button>
+                                            <button type="submit" style="width:inherit;height:min-content" class="btn btn-primary p-10 m-2" name="demoEmail" value="DemoPMEmail">Demo PM</button>
+                                            <button type="submit" style="width:inherit;height:min-content" class="btn btn-primary p-10 m-2" name="demoEmail" value="DemoDevEmail">Demo Developer</button>
+                                            <button type="submit" style="width:inherit;height:min-content" class="btn btn-primary p-10 m-2" name="demoEmail" value="DemoSubEmail">Demo Submitter</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <br />
+            
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <!-- ./ Content -->
+</div>
+<!-- ./ Content body -->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
