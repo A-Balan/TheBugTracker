@@ -71,7 +71,7 @@
                     @Html.DisplayFor(modelItem => item.EndDate)
                 </td>
                 <td>
-<img src="@_BTFileService.ConvertByteArrayToFile(@item?.ImageFileData!,@item?.ImageFileType!,DefaultImage.BTUserImage)" />
+                    <img width="40" src="@_BTFileService.ConvertByteArrayToFile(@item?.ImageFileData!,@item?.ImageFileType!,DefaultImage.BTUserImage)" class="rounded mr-3" alt="Vase">
                 </td>
 
                 <td>
@@ -87,6 +87,8 @@
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                     <a asp-action="AssignPM" asp-route-id="@item.Id">Assign PM</a> |
+                    <a asp-action="AssignProjectMembers" asp-route-id="@item.Id">Assign Project Members</a> |
+
                     @if (item.Archived == true)
                     {
                         <a asp-action="Restore" asp-route-id="@item.Id">Restore</a>

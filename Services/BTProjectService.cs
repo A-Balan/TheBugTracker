@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Humanizer;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using TheBugTracker.Data;
 using TheBugTracker.Models;
 using TheBugTracker.Models.Enums;
@@ -226,6 +230,45 @@ namespace TheBugTracker.Services
         public Task<IEnumerable<ProjectPriority>> GetProjectPrioritiesAsync()
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<ContentResult> GetProjectStatusBadgeAsync(int? projectId)
+        {
+            if (projectId == null)
+                return null;
+
+            int projectPriorityId = (await _context.Projects.Where(p => p.Id == projectId).FirstOrDefaultAsync()).ProjectPriorityId;
+
+            string html = "";
+
+            switch(projectPriorityId)
+            {
+                case 0:
+                    html = "<span class='badge bg-success-bright text-success'>Low</span>";
+
+                    break;
+                case 1:
+                    html = "<span class='badge bg-warning-bright text-warning'>Medium</span>";
+
+                    break;
+                case 2:
+                    html = "<span class='badge bg-secondary-bright text-secondary'>High</span>";
+
+                    break;
+                case 3:
+                    html = "<span class='badge bg-danger-bright text-danger'>Urgent</span>";
+                    break;
+                default:
+                    html = "<span class='badge bg-danger-bright text-danger'>Not Found</span>";
+                    break;
+            }
+
+            return new ContentResult
+            {
+                Content = html,
+                ContentType = "text/html"
+            };
+
         }
 
         public Task<List<Project>?> GetUserProjectsAsync(string? userId)

@@ -1,4 +1,6 @@
-﻿using TheBugTracker.Models;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using TheBugTracker.Models;
 
 namespace TheBugTracker.Services.Interfaces
 {
@@ -23,5 +25,6 @@ namespace TheBugTracker.Services.Interfaces
         public Task<bool> RemoveMemberFromProjectAsync(BTUser? member, int? projectId);
         public Task RestoreProjectAsync(Project? project, int? companyId);
         public Task UpdateProjectAsync(Project? project);
+        public Task<ContentResult> GetProjectStatusBadgeAsync(int? projectId);
     }
 }
