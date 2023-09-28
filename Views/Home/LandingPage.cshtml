@@ -12,36 +12,17 @@
     <!-- Content -->
     <div class="content ">
 
-        <div class="page-header">
-            <div>
-                <h3>Demo Pages</h3>
-            </div>
-        </div>
 
         <div class="row">
             <div class="col-md-12">
-
+                <h3 class="card-title">Welcome to the bug tracker!</h3>
                 <div class="card">
                     <div class="card-body">
-                        <h6 class="card-title">Welcome to the bug tracker!</h6>
                         <p>
-                            Please feel free to demo the functionalities offered by this bug tracker using any one of the links below:
+                            Please feel free to demo the functionalities offered by this bug tracker by using any Demo link.
                         </p>
-                        <div class="mb-1 text-center">
-                            <form class="" id="account" method="post">
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-8 btn-block">
-                                            <button type="submit" style="width:inherit;height:min-content" class="btn btn-primary p-10 m-2" name="demoEmail" value="DemoAdminEmail">Demo Admin</button>
-                                            <button type="submit" style="width:inherit;height:min-content" class="btn btn-primary p-10 m-2" name="demoEmail" value="DemoPMEmail">Demo PM</button>
-                                            <button type="submit" style="width:inherit;height:min-content" class="btn btn-primary p-10 m-2" name="demoEmail" value="DemoDevEmail">Demo Developer</button>
-                                            <button type="submit" style="width:inherit;height:min-content" class="btn btn-primary p-10 m-2" name="demoEmail" value="DemoSubEmail">Demo Submitter</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <br />
+                        <a class="col-6 btn btn-primary btn-lg btn-block w-25 ms-5" asp-area="Identity" asp-page="/Account/Login"><i class="fa fa-sign-in"></i><span> Try it Now</span></a>
+                        <img class="col-6 h-50 w-50" src="~/img/bug-bro.svg" />
             
                     </div>
                 </div>

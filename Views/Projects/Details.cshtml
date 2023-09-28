@@ -12,11 +12,11 @@
 
 }
 
-<!--<div>
+<div>
     <div class="container-fluid">
         <div class="row gy-2">
             <div class="col-md-12 col">
-                <div class="row col-cols-2 mt-5 bg-secondary">
+                <div class="row col-cols-2 mt-5">
                     <div class="card col m-1 p-2">
                         <div class="body">
                             @* Project Name *@
@@ -48,21 +48,21 @@
                                 <li>Deadline: <span class="">@Model.EndDate</span></li>
                                 <li>Priority: <span class="">@Model.ProjectPriority!.Name</span></li>
                                 @* if() logic *@
-                                [Project Active/Inactive]
+                               
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 col mt-5 ">
-                <div class="bg-secondary">
+                <div>
                     <div class="card m-1 p-2">
                         <div class="header">
                             <h2>Project Manager</h2>
                             <hr />
                         </div>
                         <div class="body" style="overflow-y:auto;height:300px;">
-                            [Project Manager]
+                            
                             @* if() logic for Avatar/Default etc *@
                             @((await _ProjectService.GetProjectManagerAsync(Model.Id))?.FullName);
                         </div>
@@ -70,7 +70,7 @@
                 </div>
             </div>
             <div class="col-md-4 col mt-5 ">
-                <div class="bg-secondary">
+                <div >
                     <div class="card m-1 p-2">
                         <div class="header">
                             <h2>Project Team</h2>
@@ -80,7 +80,6 @@
                         <div class="body" style="overflow-y:auto;height:300px;">
                             <ul class="right_chat list-unstyled mb-0">
 
-                                [Project Members]
                                 @* Logic for avatars *@
                                 @foreach (BTUser member in Model.Members)
                                 {
@@ -136,83 +135,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 col">
-                <div class="mt-5 bg-secondary">
-                    <div class="card m-1 p-2">
-                        <div class="header">
-                            <h2>Tickets</h2>
-                        </div>
-                        <div class="body">
-                            <div class="table-responsive" style="overflow-y:auto;height:600px;">
-                                <table class="table table-hover">
-                                    <thead class="">
-                                       Tickets
-                                    </thead>
-                                    <tbody>
-                                       
-                                            @foreach (Ticket ticket in Model.Tickets)
-                                            {
-                                                <tr>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => ticket.Title)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => ticket.Description)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => ticket.Created)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => ticket.Updated)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => ticket.Archived)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => ticket.ArchivedByProject)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => ticket.Project.Description)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => ticket.TicketType.Name)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => ticket.TicketPriority.Name)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => ticket.TicketStatus.Name)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => ticket.DeveloperUser.FullName)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => ticket.SubmitterUser.FullName)
-                                                    </td>
-                                                    <td>
-                                                        <a asp-action="Edit" asp-route-id="@ticket.Id">Edit</a> |
-                                                        <a asp-action="Details" asp-route-id="@ticket.Id">Details</a> |
-                                                        <a asp-action="Delete" asp-route-id="@ticket.Id">Delete</a>
-                                                    </td>
-                                                </tr>
-                                                }
-                                    </tbody>
-                                </table>
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+           
         </div>
     </div>
 </div>   
-
-<h1>Details</h1>
-
 <div>
-    <h4>Project</h4>
+    <h3>Project Details</h3>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -246,18 +174,6 @@
             @Html.DisplayFor(model => model.EndDate)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageFileData)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImageFileData)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageFileType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImageFileType)
-        </dd>
-        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Archived)
         </dt>
         <dd class = "col-sm-10">
@@ -273,643 +189,77 @@
             @Html.DisplayNameFor(model => model.ProjectPriority)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProjectPriority.Id)
+            @Html.DisplayFor(model => model.ProjectPriority.Name)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
-
--->
-
-<!--BEGIN TEMPLATE CODE SECTION-->
-
-
-<div class="content-body">
-    <!-- Content -->
-    <div class="content ">
-       
-
-        <div class="row">
-            <div class="col-lg-7 col-md-12">
-                <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="home" role="tabpanel">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex mb-3">
-                                    <div class="d-flex">
-                                        <figure class="avatar mr-3">
-                                            <img src="../../assets/media/image/user/man_avatar1.jpg"
-                                                 class="rounded-circle" alt="...">
-                                        </figure>
-                                        <div class="d-inline-block">
-                                            <div><strong>Martina Ash</strong> shared a link</div>
-                                            <small class="text-muted">7 hours ago</small>
-                                        </div>
-                                    </div>
-                                    <div class="dropdown ml-auto">
-                                        <a href="#" class="btn btn-floating btn-sm" data-toggle="dropdown">
-                                            <i class="ti-more-alt"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a href="#" class="dropdown-item">Share</a>
-                                            <a href="#" class="dropdown-item">Edit</a>
-                                            <a href="#" class="dropdown-item">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet dolor eos
-                                    id
-                                    ipsa
-                                    nobis omnis, tenetur? Dolor officiis omnis quo?
-                                </p>
-                                <a href="#">
-                                    <div class="row no-gutters border card flex-row border-radius-1">
-                                        <div class="col-xl-3 col-lg-12">
-                                            <img src="../../assets/media/image/photo1.jpg" class="img-fluid"
-                                                 alt="image/">
-                                        </div>
-                                        <div class="col-xl-9 col-lg-12 p-3">
-                                            <h5>Algolia Integration</h5>
-                                            <p class="mb-0">
-                                                Lorem ipsum dolor sit amet, consectetur
-                                                adipisicing elit. Amet blanditiis cumque, cupiditate
-                                                expedita fugiat iste iusto magni officia omnis ratione?
-                                            </p>
-                                            <small class="text-primary">https://themeforest.net/</small>
-                                        </div>
-                                    </div>
-                                </a>
-                                <div class="d-flex justify-content-between align-items-center mt-4">
-                                    <div>
-                                        <a href="#" title="Like" data-toggle="tooltip">
-                                            <i class="fa fa-heart text-danger mr-1"></i> 42
-                                        </a>
-                                    </div>
-                                    <div>
-                                        <a href="#" title="Comments" data-toggle="tooltip">
-                                            <i class="fa fa-comment-o mr-1"></i> 3
-                                        </a>
-                                        <a href="#" class="ml-3" title="Share" data-toggle="tooltip">
-                                            <i class="fa fa-share mr-1"></i> 1
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex mb-3">
-                                    <div class="d-flex">
-                                        <figure class="avatar mr-3">
-                                            <img src="../../assets/media/image/user/man_avatar3.jpg"
-                                                 class="rounded-circle" alt="...">
-                                        </figure>
-                                        <div class="d-inline-block">
-                                            <div><strong>Martina Ash</strong> shared a link</div>
-                                            <small class="text-muted">7 hours ago</small>
-                                        </div>
-                                    </div>
-                                    <div class="dropdown ml-auto">
-                                        <a href="#" class="btn btn-floating btn-sm" data-toggle="dropdown">
-                                            <i class="ti-more-alt"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a href="#" class="dropdown-item">Share</a>
-                                            <a href="#" class="dropdown-item">Edit</a>
-                                            <a href="#" class="dropdown-item">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam
-                                    doloremque
-                                    eveniet illo minus nemo obcaecati, voluptatem? At corporis cum dolorem
-                                    eos
-                                    impedit in magni officiis quibusdam, ratione sequi totam voluptatum.
-                                </p>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet dolor eos
-                                    id
-                                    ipsa
-                                    nobis omnis, tenetur? Dolor officiis omnis quo?
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center mt-4">
-                                    <div>
-                                        <a href="#" title="Like" data-toggle="tooltip">
-                                            <i class="fa fa-heart-o mr-1"></i> 142
-                                        </a>
-                                    </div>
-                                    <div>
-                                        <a href="#" title="Comments" data-toggle="tooltip">
-                                            <i class="fa fa-comment-o mr-1"></i> 13
-                                        </a>
-                                        <a href="#" class="ml-3" title="Share" data-toggle="tooltip">
-                                            <i class="fa fa-share mr-1"></i> 4
-                                        </a>
-                                    </div>
-                                </div>
-                                <!-- People who wrote, liked, or shared a comment -->
-                                <div class="mt-4">
-                                    <div class="card card-body border p-3">
-                                        <div class="d-flex mb-3">
-                                            <div class="d-flex align-items-center">
-                                                <figure class="avatar avatar-sm mr-3">
-                                                    <img src="../../assets/media/image/user/man_avatar4.jpg"
-                                                         class="rounded-circle" alt="...">
-                                                </figure>
-                                                <div class="d-inline-block">
-                                                    <div><strong>Martina Ash</strong> shared a link</div>
-                                                    <small class="text-muted">7 hours ago</small>
-                                                </div>
-                                            </div>
-                                            <div class="dropdown ml-auto">
-                                                <a href="#" class="btn btn-floating btn-sm"
-                                                   data-toggle="dropdown">
-                                                    <i class="ti-more-alt"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a href="#" class="dropdown-item">Share</a>
-                                                    <a href="#" class="dropdown-item">Edit</a>
-                                                    <a href="#" class="dropdown-item">Delete</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                            Delectus,
-                                            ducimus?
-                                        </p>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <a href="#" title="Like" data-toggle="tooltip">
-                                                    <i class="fa fa-heart-o mr-1"></i> 3
-                                                </a>
-                                                <a href="#" class="ml-3">
-                                                    Reply
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card card-body border p-3">
-                                        <div class="d-flex mb-3">
-                                            <div class="d-flex align-items-center">
-                                                <figure class="avatar avatar-sm mr-3">
-                                                    <img src="../../assets/media/image/user/man_avatar1.jpg"
-                                                         class="rounded-circle" alt="...">
-                                                </figure>
-                                                <div class="d-inline-block">
-                                                    <div><strong>Martina Ash</strong> shared a link</div>
-                                                    <small class="text-muted">7 hours ago</small>
-                                                </div>
-                                            </div>
-                                            <div class="dropdown ml-auto">
-                                                <a href="#" class="btn btn-floating btn-sm"
-                                                   data-toggle="dropdown">
-                                                    <i class="ti-more-alt"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a href="#" class="dropdown-item">Share</a>
-                                                    <a href="#" class="dropdown-item">Edit</a>
-                                                    <a href="#" class="dropdown-item">Delete</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, ad,
-                                            assumenda at atque corporis culpa earum id illum impedit laborum
-                                            maxime
-                                            minus nisi omnis quod sequi suscipit totam veritatis voluptatum.
-                                        </p>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <a href="#" title="Like" data-toggle="tooltip">
-                                                    <i class="fa fa-heart-o mr-1"></i> 1
-                                                </a>
-                                                <a href="#" class="ml-3">
-                                                    Reply
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <form class="d-flex">
-                                        <div>
-                                            <figure class="avatar mr-3">
-                                                <img src="../../assets/media/image/user/women_avatar1.jpg"
-                                                     class="rounded-circle" alt="...">
-                                            </figure>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <div class="form-group">
-                                                <textarea rows="2" class="form-control"
-                                                          placeholder="Post comment for Martina"></textarea>
-                                            </div>
-                                            <button class="btn btn-primary">Submit</button>
-                                        </div>
-                                    </form>
-                                </div>
-                                <!-- ./ People who wrote, liked, or shared a comment -->
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex mb-3">
-                                    <div class="d-flex">
-                                        <figure class="avatar mr-3">
-                                            <img src="../../assets/media/image/user/women_avatar2.jpg"
-                                                 class="rounded-circle" alt="...">
-                                        </figure>
-                                        <div class="d-inline-block">
-                                            <div>Anna Mull</div>
-                                            <small class="text-muted">7 hours ago</small>
-                                        </div>
-                                    </div>
-                                    <div class="dropdown ml-auto">
-                                        <a href="#" class="btn btn-floating btn-sm" data-toggle="dropdown">
-                                            <i class="ti-more-alt"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a href="#" class="dropdown-item">Share</a>
-                                            <a href="#" class="dropdown-item">Edit</a>
-                                            <a href="#" class="dropdown-item">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet dolor eos
-                                    id
-                                    ipsa
-                                    nobis omnis, tenetur? Dolor officiis omnis quo?
-                                </p>
-                                <div class="row row-xs">
-                                    <div class="col-6">
-                                        <img src="../../assets/media/image/photo9.jpg"
-                                             class="w-100 border-radius-1" alt="image/">
-                                    </div>
-                                    <div class="col-6">
-                                        <img src="../../assets/media/image/photo10.jpg"
-                                             class="w-100 border-radius-1" alt="image/">
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center mt-4">
-                                    <div>
-                                        <a href="#" title="Like" data-toggle="tooltip">
-                                            <i class="fa fa-heart-o mr-1"></i> 311
-                                        </a>
-                                    </div>
-                                    <div>
-                                        <a href="#" title="Comments" data-toggle="tooltip">
-                                            <i class="fa fa-comment-o mr-1"></i> 33
-                                        </a>
-                                        <a href="#" class="ml-3" title="Share" data-toggle="tooltip">
-                                            <i class="fa fa-share mr-1"></i> 14
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade show" id="timeline" role="tabpanel">
-                        <div class="card">
-                            <div class="card-body">
-                                <h6 class="card-title">Timeline</h6>
-                                <div class="timeline">
-                                    <div class="timeline-item">
-                                        <div>
-                                            <a href="#">
-                                                <figure class="avatar avatar-sm mr-3 bring-forward">
-                                                    <img src="../../assets/media/image/user/man_avatar2.jpg"
-                                                         class="rounded-circle" alt="image/">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                        <div>
-                                            <h6 class="d-flex justify-content-between mb-4">
-                                                <span>
-                                                    <a href="#">Martina Ash</a> shared a link
-                                                </span>
-                                                <span class="text-muted font-weight-normal">
-                                                    Tue
-                                                    8:17pm
-                                                </span>
-                                            </h6>
-                                            <a href="#">
-                                                <div class="mb-3">
-                                                    <div class="row no-gutters border card flex-row border-radius-1">
-                                                        <div class="col-xl-3 col-lg-12">
-                                                            <img src="../../assets/media/image/photo1.jpg"
-                                                                 class="w-100" alt="image/">
-                                                        </div>
-                                                        <div class="col-xl-9 col-lg-12 p-3">
-                                                            <h5 class="line-height-16">Connection title</h5>
-                                                            Lorem ipsum dolor sit amet, consectetur
-                                                            adipisicing
-                                                            elit. Facilis, voluptatibus.
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="timeline-item">
-                                        <div>
-                                            <figure class="avatar avatar-sm mr-3 bring-forward">
-                                                <span class="avatar-title bg-success-bright text-success rounded-circle">C</span>
-                                            </figure>
-                                        </div>
-                                        <div>
-                                            <h6 class="d-flex justify-content-between mb-4">
-                                                <span>
-                                                    <a href="#">Jonny Richie</a> shared a post
-                                                </span>
-                                                <span class="text-muted font-weight-normal">
-                                                    Tue
-                                                    8:17pm
-                                                </span>
-                                            </h6>
-                                            <a href="#">
-                                                <div class="mb-3 border p-3 border-radius-1">
-                                                    Lorem ipsum dolor sit amet, consectetur adipisicing
-                                                    elit. Ab
-                                                    aliquid aperiam commodi culpa debitis deserunt enim
-                                                    itaque
-                                                    laborum minima neque nostrum pariatur perspiciatis,
-                                                    placeat
-                                                    quidem, ratione recusandae reiciendis sapiente, ut
-                                                    veritatis
-                                                    vitae. Beatae dolore hic odio! Esse officiis quidem
-                                                    voluptate.
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="timeline-item">
-                                        <div>
-                                            <figure class="avatar avatar-sm mr-3 bring-forward">
-                                                <span class="avatar-title bg-info-bright text-info rounded-circle">K</span>
-                                            </figure>
-                                        </div>
-                                        <div>
-                                            <h6 class="d-flex justify-content-between mb-4">
-                                                <span>
-                                                    <a href="#">Jonny Richie</a> attached file
-                                                </span>
-                                                <span class="text-muted font-weight-normal">
-                                                    Tue
-                                                    8:17pm
-                                                </span>
-                                            </h6>
-                                            <a href="#">
-                                                <div class="mb-3 border p-3 border-radius-1">
-                                                    <i class="fa fa-file-pdf-o mr-2"></i> filename12334.pdf
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="timeline-item">
-                                        <div>
-                                            <figure class="avatar avatar-sm mr-3 bring-forward">
-                                                <span class="avatar-title bg-warning-bright text-warning rounded-circle">
-                                                    <i class="ti-image/"></i>
-                                                </span>
-                                            </figure>
-                                        </div>
-                                        <div>
-                                            <h6 class="d-flex justify-content-between mb-4">
-                                                <span>
-                                                    <a href="#">Jonny Richie</a> shared files
-                                                </span>
-                                                <span class="text-muted font-weight-normal">
-                                                    Tue
-                                                    8:17pm
-                                                </span>
-                                            </h6>
-                                            <div class="row row-xs">
-                                                <div class="col-xl-3 col-lg-4 col-md-6">
-                                                    <figure>
-                                                        <img src="../../assets/media/image/portfolio-five.jpg"
-                                                             class="w-100 border-radius-1" alt="image/">
-                                                    </figure>
-                                                </div>
-                                                <div class="col-xl-3 col-lg-4 col-md-6">
-                                                    <figure>
-                                                        <img src="../../assets/media/image/portfolio-one.jpg"
-                                                             class="w-100 border-radius-1" alt="image/">
-                                                    </figure>
-                                                </div>
-                                                <div class="col-xl-3 col-lg-4 col-md-6">
-                                                    <figure>
-                                                        <img src="../../assets/media/image/portfolio-three.jpg"
-                                                             class="w-100 border-radius-1" alt="image/">
-                                                    </figure>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="timeline-item">
-                                        <div>
-                                            <figure class="avatar avatar-sm mr-3 bring-forward">
-                                                <span class="avatar-title bg-youtube rounded-circle">Y</span>
-                                            </figure>
-                                        </div>
-                                        <div>
-                                            <h6 class="d-flex justify-content-between">
-                                                <span>
-                                                    <a href="#">Jonny Richie</a> shared video
-                                                </span>
-                                                <span class="text-muted font-weight-normal">
-                                                    Tue
-                                                    8:17pm
-                                                </span>
-                                            </h6>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                                Iusto,
-                                                placeat.
-                                            </p>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="embed-responsive embed-responsive-16by9 m-t-b-5">
-                                                        <iframe class="embed-responsive-item"
-                                                                src="https://www.youtube.com/embed/l-epKcOA7RQ"
-                                                                allowfullscreen></iframe>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="connections" role="tabpanel">
-                    </div>
-                    <div class="tab-pane fade" id="earnings" role="tabpanel">
-                        <div class="card">
-                            <div class="card-body">
-                                <h6 class="card-title">Earnings</h6>
-                                <div class="table-responsive">
-                                    <table class="table table-hover">
-                                        <thead class="thead-light">
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Item Sales Count</th>
-                                                <th>Earnings</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>monday, 12</td>
-                                                <td>
-                                                    3
-                                                </td>
-                                                <td>$400</td>
-                                            </tr>
-                                            <tr>
-                                                <td>tuesday, 13</td>
-                                                <td>
-                                                    2
-                                                </td>
-                                                <td>$400</td>
-                                            </tr>
-                                            <tr>
-                                                <td>wednesday, 14</td>
-                                                <td>
-                                                    3
-                                                </td>
-                                                <td>$420</td>
-                                            </tr>
-                                            <tr>
-                                                <td>thursday, 15</td>
-                                                <td>
-                                                    5
-                                                </td>
-                                                <td>$500</td>
-                                            </tr>
-                                            <tr>
-                                                <td>friday, 15</td>
-                                                <td>
-                                                    3
-                                                </td>
-                                                <td>$400</td>
-                                            </tr>
-                                            <tr>
-                                                <td>saturday, 16</td>
-                                                <td>
-                                                    3
-                                                </td>
-                                                <td>$400</td>
-                                            </tr>
-                                            <tr>
-                                                <td>sunday, 17</td>
-                                                <td>
-                                                    3
-                                                </td>
-                                                <td>$400</td>
-                                            </tr>
-                                            <tr>
-                                                <td>monday, 18</td>
-                                                <td>
-                                                    3
-                                                </td>
-                                                <td>$500</td>
-                                            </tr>
-                                            <tr>
-                                                <td>tuesday, 19</td>
-                                                <td>
-                                                    3
-                                                </td>
-                                                <td>$400</td>
-                                            </tr>
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <th></th>
-                                                <th>28</th>
-                                                <th>$3720</th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<br/>
+<br/>
+<div class="col-md-12 col">
+    <div class="mt-5">
+        <div class="card m-1 p-2">
+            <div class="header">
+                <h2>Tickets</h2>
             </div>
-            <div class="col-lg-5 col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-title d-flex justify-content-between align-items-center">
-                            Project Members
-                            <a href="#" class="small">View All</a>
-                        </h6>
-                        <ul class="list-group list-group-flush">
-                            @{
-                                if (Model.Members.Count > 0)
-                                {
-                                    foreach (BTUser member in Model.Members)
-                                    {
-                                        var memberRoles = await _RolesService.GetUserRolesAsync(member);
+            <div class="body">
+                <div class="table-responsive" style="overflow-y:auto;height:600px;">
+                    <table class="table table-hover">
+                        <thead class="">
+                            Tickets
+                        </thead>
+                        <tbody>
 
-                                        <li class="list-group-item d-flex align-items-center px-0">
-                                            <figure class="avatar avatar-state-success mr-3">
-                                                <img src="@_FileService.ConvertByteArrayToFile(member.ImageData, member.ImageType, DefaultImage.BTUserImage)"
-                                                     class="rounded-circle" alt="image">
-                                            </figure>
-                                            <div>
-                                                <h6 class="mb-0">@member.FullName</h6>
-                                                <small class="text-muted">@(string.Join(",", memberRoles!))</small>
-                                            </div>
-                                        </li>
-                                    }
-                                }
-                                else
-                                {
-                                    <p>There are no members on this project, yet.</p>
-                                }
+                            @foreach (Ticket ticket in Model.Tickets)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => ticket.Title)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => ticket.Created)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => ticket.Updated)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => ticket.Archived)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => ticket.TicketType.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => ticket.TicketPriority.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => ticket.TicketStatus.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => ticket.DeveloperUser.FullName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => ticket.SubmitterUser.FullName)
+                                    </td>
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@ticket.Id">Edit</a> |
+                                        <a asp-action="Details" asp-route-id="@ticket.Id">Details</a> |
+                                        <a asp-action="Delete" asp-route-id="@ticket.Id">Delete</a>
+                                    </td>
+                                </tr>
                             }
-                        </ul>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-title d-flex justify-content-between align-items-center">
-                            Mutual Friends
-                            <a href="#" class="small">View All</a>
-                        </h6>
-                        <div class="d-flex align-items-center">
-                            <div class="avatar-group mr-2">
-                                <a href="#" class="avatar" data-toggle="tooltip" title="Valentine Maton">
-                                    <img src="../../assets/media/image/user/women_avatar1.jpg"
-                                         class="rounded-circle" alt="image">
-                                </a>
-                                <a href="#" class="avatar" data-toggle="tooltip" title="Holmes Cherryman">
-                                    <img src="../../assets/media/image/user/man_avatar1.jpg"
-                                         class="rounded-circle" alt="image">
-                                </a>
-                                <a href="#" class="avatar" data-toggle="tooltip" title="Malanie Hanvey">
-                                    <img src="../../assets/media/image/user/man_avatar2.jpg"
-                                         class="rounded-circle" alt="image">
-                                </a>
-                                <a href="#" class="avatar" data-toggle="tooltip" title="Kenneth Hune">
-                                    <img src="../../assets/media/image/user/women_avatar2.jpg"
-                                         class="rounded-circle" alt="image">
-                                </a>
-                                <a href="#" class="avatar" data-toggle="tooltip" title="Kenneth Hune">
-                                    <img src="../../assets/media/image/user/women_avatar3.jpg"
-                                         class="rounded-circle" alt="image">
-                                </a>
-                            </div>
-                            <span>+5 friends</span>
-                        </div>
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
+
     </div>
-    <!-- ./ Content -->
 </div>
-<!-- ./ Content body -->
+
+
+
