@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel.Design;
 using TheBugTracker.Data;
 using TheBugTracker.Models;
 using TheBugTracker.Models.Enums;
@@ -227,12 +228,28 @@ namespace TheBugTracker.Services
             }
         }
 
-        public Task<IEnumerable<ProjectPriority>> GetProjectPrioritiesAsync()
+        public async Task<IEnumerable<ProjectPriority>> GetProjectPrioritiesAsync()
         {
-            throw new NotImplementedException();
+            return await _context.ProjectPriorities.ToListAsync();
         }
 
-        public async Task<ContentResult> GetProjectStatusBadgeAsync(int? projectId)
+        public async Task<List<Project>> GetAllProjectsByPriorityAsync(int? companyId, string? priority)
+        { try
+            {
+                List<Project> projects = await _context.Projects.Where(p => p.CompanyId == companyId && p.ProjectPriority!.Name == priority).Include(p => p.Members)
+                    .Include(p => p.ProjectPriority)
+                    .Include(p => p.Tickets)
+                    .ToListAsync();
+                return projects;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+public async Task<ContentResult> GetProjectStatusBadgeAsync(int? projectId)
         {
             if (projectId == null)
                 return null;

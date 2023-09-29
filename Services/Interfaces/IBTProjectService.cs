@@ -26,5 +26,6 @@ namespace TheBugTracker.Services.Interfaces
         public Task RestoreProjectAsync(Project? project, int? companyId);
         public Task UpdateProjectAsync(Project? project);
         public Task<ContentResult> GetProjectStatusBadgeAsync(int? projectId);
+        public Task<List<Project>> GetAllProjectsByPriorityAsync(int? companyId, string? priority);
     }
 }

@@ -106,7 +106,7 @@ namespace TheBugTracker.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null, string demoEmail = null)
         {
-            returnUrl ??= Url.Content("~/");
+            returnUrl ??= Url.Content("~/Home/Index");
 
             if (!string.IsNullOrEmpty(demoEmail))
             {

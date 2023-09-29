@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<ManageUserRolesViewModel>
 @using TheBugTracker.Models.ViewModels;
 
-<div class="row">
+<div class="row justify-content-center">
     <h2 class="m-t-0 h3"><b>Manage Member Roles </b></h2>
     @foreach (var viewModel in Model)
     {
-        <div class="row">
-            <div class="card col-4 m-3">
+        <div class="row justify-content-center">
+            <div class="card col-6 m-3">
                 <div class="card-body">
                     <p class="text-muted font-13 m-b-30">
                         This form displays the current roles assigned to the user: <strong class="text-info">@viewModel.BTUser!.FullName</strong>.

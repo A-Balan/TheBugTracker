@@ -3,9 +3,6 @@
 @inject IBTFileService _FileService
 @inject UserManager<BTUser> _UserManager
 @inject IBTRolesService _RolesService
-
-<h1>Project: @Model.Name</h1>
-<p>@Model.Description</p>
 @{
     BTUser? btUser = await _UserManager.GetUserAsync(User);
     BTUser? projectManager = await _ProjectService.GetProjectManagerAsync(Model.Id)!;
@@ -20,7 +17,7 @@
                     <div class="card col m-1 p-2">
                         <div class="body">
                             @* Project Name *@
-                            <h5>@Model.Name</h5>
+                            <h2>@Model.Name</h2>
                             @* Project Description *@
                             <p>@Model.Description</p>
                             <div class="progress-container progress-info m-b-25">
@@ -57,7 +54,7 @@
             <div class="col-md-4 col mt-5 ">
                 <div>
                     <div class="card m-1 p-2">
-                        <div class="header">
+                        <div class="">
                             <span><a class="btn btn-sm alert-primary" asp-action="AssignPM" asp-route-id="@Model.Id">Assign PM</a></span>
                             <h2>Project Manager</h2>
                             <hr />
@@ -73,7 +70,7 @@
             <div class="col-md-4 col mt-5 ">
                 <div >
                     <div class="card m-1 p-2">
-                        <div class="header">
+                        <div class="">
                             <span><a class="btn btn-sm alert-primary" asp-action="AssignProjectMembers" asp-route-id="@Model.Id">Assign Team</a></span>
                             <h2>Project Team</h2>
                             <hr />
@@ -101,11 +98,12 @@
             <div class="col-md-4 col mt-5 ">
                 <div class="bg-dark">
                     <div class="card m-1 p-2">
-                        <div class="header">
+                        <div class="">
                             <h2>Project Activity</h2>
                             <hr />
                         </div>
                         <div class="body" style="overflow-y:auto;height:300px;">
+
                             @* Project Activity loop *@
                             @if(Model.Tickets.SelectMany(t=>t.History) != null)
                             {
@@ -211,7 +209,7 @@
 <div class="col-md-12 col">
     <div class="mt-5">
         <div class="card m-1 p-2">
-            <div class="header">
+            <div class="">
                 <h2>Tickets</h2>
             </div>
             <div class="body">

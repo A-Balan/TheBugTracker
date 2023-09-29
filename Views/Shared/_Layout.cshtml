@@ -133,7 +133,7 @@
                     <div class="header-logo">
                         <a href=index.html>
                             <img class="logo" height="40" src="~/img/bird.png" alt="logo">
-                            <h3>Bug Trax</h3>
+                            <h3> Bug Trax</h3>
                         </a>
                     </div>
                 </div>
@@ -213,6 +213,8 @@
                     </a>
                 </div>
                 <div class="navigation-menu-body">
+                @if(User.Identity!.IsAuthenticated)
+                {
                     <ul>
                         <li>
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">
@@ -238,24 +240,57 @@
                                 <span>Tickets</span>
                             </a>
                         </li>
+                        @if(User.IsInRole(BTRoles.Admin.ToString()))
+                        {
+                            <li>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Companies" asp-action="ManageUserRoles">
+                                    <span class="nav-link-icon">
+                                        <i data-feather="check-square"></i>
+                                    </span>
+                                    <span>Manage Company Roles</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Invites" asp-action="Create">
+                                    <span class="nav-link-icon">
+                                        <i class="ti-agenda"></i>
+                                    </span>
+                                    <span>Invite Workers</span>
+                                </a>
+                            </li>
+                        }
                         <li>
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Companies" asp-action="ManageUserRoles">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Notifications" asp-action="Index">
                                 <span class="nav-link-icon">
-                                    <i data-feather="check-square"></i>
+                                    <i data-feather="archive"></i>
                                 </span>
-                                <span>Manage Company Roles</span>
+                                <span>Notifications</span>
                             </a>
                         </li>
+
+                    </ul>
+                }
+                else
+                {
+                    <ul>
                         <li>
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Invites" asp-action="Create">
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">
                                 <span class="nav-link-icon">
                                     <i class="ti-agenda"></i>
                                 </span>
-                                <span>Invite Workers</span>
+                                <span>Log In</span>
                             </a>
                         </li>
-                       
+                        <li>
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">
+                                <span class="nav-link-icon">
+                                    <i class="ti-agenda"></i>
+                                </span>
+                                <span>Register</span>
+                            </a>
+                        </li>
                     </ul>
+                }
                 </div>
             </div>
             <!-- end::navigation -->
@@ -271,14 +306,8 @@
                 <!-- ./ Content -->
                 <!-- Footer -->
                 <footer class="content-footer">
-                    <div>© 2020 Gogi - <a href="http://laborasyon.com" target="_blank">Laborasyon</a></div>
-                    <div>
-                        <nav class="nav">
-                            <a href="https://themeforest.net/licenses/standard" class="nav-link">Licenses</a>
-                            <a href="#" class="nav-link">Change Log</a>
-                            <a href="#" class="nav-link">Get Help</a>
-                        </nav>
-                    </div>
+                    <div>© 2023 Anya Balan - <a href="http://abalan.netlify.app" target="_blank">Portfolio</a></div>
+                  
                 </footer>
                 <!-- ./ Footer -->
             </div>

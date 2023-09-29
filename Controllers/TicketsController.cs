@@ -49,6 +49,7 @@ namespace TheBugTracker.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AssignTicket(int? id)
         {
             if(id == null)

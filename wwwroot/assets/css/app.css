@@ -866,7 +866,7 @@ body.error-page .display-1 {
 
 .form-control:not(.form-control-lg):not(.form-control-sm),
 .swal-modal input.swal-content__input:not(.form-control-lg):not(.form-control-sm) {
-  height: calc(1.5em + .75rem + 3px);
+ 
 }
 
 .form-rounded {

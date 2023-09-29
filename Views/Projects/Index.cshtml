@@ -16,9 +16,12 @@
 }
 
 <h1>Index</h1>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if(User.IsInRole(BTRoles.Admin.ToString()) || User.IsInRole(BTRoles.ProjectManager.ToString()))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
 
 
 

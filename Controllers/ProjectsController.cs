@@ -184,6 +184,7 @@ namespace TheBugTracker.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AssignPM(int? id)
         {
             if(id == null)
@@ -247,6 +248,7 @@ namespace TheBugTracker.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AssignProjectMembers(int? id)
         {
             if (id == null)
