@@ -89,7 +89,11 @@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="AssignPM" asp-route-id="@item.Id">Assign PM</a> |
+                    @{
+                        if(User.IsInRole(BTRoles.Admin.ToString())) {
+                            <a asp-action="AssignPM" asp-route-id="@item.Id">Assign PM</a>  |
+                        }
+                    }
                     <a asp-action="AssignProjectMembers" asp-route-id="@item.Id">Assign Project Members</a> |
 
                     @if (item.Archived == true)
