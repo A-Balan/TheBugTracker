@@ -65,13 +65,13 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Created)
+                    @item.Created.ToString("g")
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
+                    @item.StartDate.ToString("g")
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
+                    @item.EndDate.ToString("g")
                 </td>
                 <td>
                     <img width="40" src="@_BTFileService.ConvertByteArrayToFile(@item?.ImageFileData!,@item?.ImageFileType!,DefaultImage.BTUserImage)" class="rounded mr-3" alt="Vase">
