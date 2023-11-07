@@ -63,7 +63,7 @@ namespace TheBugTracker.Controllers
             viewModel.Ticket = await _ticketService.GetTicketByIdAsync(id, _companyId);
             string? currentDeveloper = viewModel.Ticket?.DeveloperUserId;
                 viewModel.Developers = new SelectList(await _projectService.GetProjectMembersByRoleAsync(viewModel.Ticket?.ProjectId,
-                    nameof(BTRoles.Developer), _companyId), "Id", "FullName",
+                    BTRoles.Developer.ToString(), _companyId), "Id", "FullName",
                     currentDeveloper);
             
 
@@ -283,7 +283,7 @@ namespace TheBugTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Updated,Archived,ProjectId,TicketTypeId,TicketStatusId,TicketPriorityId,DeveloperUserId,SubmitterUserId")] Ticket ticket)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Created,Updated,Archived,ProjectId,TicketTypeId,TicketStatusId,TicketPriorityId,DeveloperUserId,SubmitterUserId")] Ticket ticket)
         {
             if (id != ticket.Id)
             {

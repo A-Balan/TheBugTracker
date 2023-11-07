@@ -119,10 +119,10 @@
                     <div class="page-header d-md-flex justify-content-between">
                         <div>
                             <h3>Welcome, @fullName</h3>
-                            <p class="text-muted">This page shows an overview for your account summary.</p>
+                      
                         </div>
                         
-        </div>
+                    </div>
 
 
 <!--
@@ -146,7 +146,7 @@
 
         <div class="card">
             <div class="card-body">
-                <h6 class="card-title">Recent Orders</h6>
+                <h6 class="card-title">Projects</h6>
                 <div class="table-responsive">
                     <table id="recent-orders" class="table">
                         <thead>
@@ -173,7 +173,7 @@
                                                     <span>@project.Name</span>
                                                 </a>
                                             </td>
-                                            <td>@project.Created</td>
+                                            <td>@project.Created.ToString("g")</td>
                                             <td>
                                             @{
                                                 int projectPriorityId = (await _ProjectService.GetProjectByIdAsync(project.Id, btUser.CompanyId)).ProjectPriorityId;
@@ -198,7 +198,7 @@
                                                 }
                                             }
                                             </td>
-                                            <td>@project.EndDate</td>
+                                            <td>@project.EndDate.ToString("g")</td>
                                         </tr>
                                         i++;
                                     }
