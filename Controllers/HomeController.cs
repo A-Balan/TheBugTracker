@@ -19,6 +19,11 @@ namespace TheBugTracker.Controllers
             _projectService = projectService;
         }
 
+        public IActionResult Welcome()
+        {
+            return View();
+        }
+
         public IActionResult LandingPage()
         {
             return View();
