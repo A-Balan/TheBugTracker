@@ -1,55 +1,54 @@
 ﻿@page
 @model RegisterModel
-@{
-    ViewData["Title"] = "Register";
-}
 
 <h1>@ViewData["Title"]</h1>
 
 <div class="row">
     <div class="col-md-4">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h3>Create a new company account.</h3>
+            <h3>Register</h3>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <label asp-for="Input.FirstName">First Name</label>
-                <input asp-for="Input.FirstName" class="form-control" aria-required="true" placeholder="first name">
-                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <label asp-for="Input.LastName">Last Name</label>
-                <input asp-for="Input.LastName" class="form-control" aria-required="true" placeholder="last name">
-                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            <div class="row">
+                <div class="form-floating mb-3 col-6">
+                    <label asp-for="Input.FirstName">First Name</label>
+                    <input asp-for="Input.FirstName" class="form-control" aria-required="true">
+                    <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3 col-6">
+                    <label asp-for="Input.LastName">Last Name</label>
+                    <input asp-for="Input.LastName" class="form-control" aria-required="true">
+                    <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-floating mb-3">
                 <label asp-for="Input.CompanyName">Company Name</label>
-                <input asp-for="Input.CompanyName" class="form-control" aria-required="true" placeholder="first name">
+                <input asp-for="Input.CompanyName" class="form-control" aria-required="true">
                 <span asp-validation-for="Input.CompanyName" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
                 <label asp-for="Input.CompanyDescription">Company Description</label>
-                <input asp-for="Input.CompanyDescription" class="form-control" aria-required="true" placeholder="first name">
+                <input asp-for="Input.CompanyDescription" class="form-control" aria-required="true">
                 <span asp-validation-for="Input.CompanyDescription" class="text-danger"></span>
             </div>
 
             <div class="form-floating mb-3">
                 <label asp-for="Input.Email">Email</label>
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
 
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
                 <label asp-for="Input.Password">Password</label>
-                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
                 <label asp-for="Input.ConfirmPassword">Confirm Password</label>
-                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+            <button id="registerSubmit" type="submit" class=" btn btn-lg btn-primary">Register</button>
         </form>
     </div>
 </div>
