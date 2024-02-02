@@ -20,7 +20,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label asp-for="@viewModel.Roles" class="custom-label"> Roles for @viewModel.BTUser.FullName </label>
-                                    <select asp-for="@viewModel.SelectedRoles" class="form-control" asp-items="@viewModel.Roles">
+                                    <select asp-for="@viewModel.SelectedRoles" class="form-control" style="min-height: 20vh" asp-items="@viewModel.Roles" multiple>
                                     </select>
                                     <hr />
                                 </div>

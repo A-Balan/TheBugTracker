@@ -55,7 +55,7 @@
                 <div>
                     <div class="card m-1 p-2">
                         <div class="">
-                            <span><a class="btn btn-sm alert-primary" asp-action="AssignPM" asp-route-id="@Model.Id">Assign PM</a></span>
+                            <span><a class="btn btn-sm btn-primary mb-2" asp-action="AssignPM" asp-route-id="@Model.Id">Assign PM</a></span>
                             <h2>Project Manager</h2>
                             <hr />
                         </div>
@@ -71,7 +71,7 @@
                 <div >
                     <div class="card m-1 p-2">
                         <div class="">
-                            <span><a class="btn btn-sm alert-primary" asp-action="AssignProjectMembers" asp-route-id="@Model.Id">Assign Team</a></span>
+                            <span><a class="btn btn-sm btn-primary mb-2" asp-action="AssignProjectMembers" asp-route-id="@Model.Id">Assign Team</a></span>
                             <h2>Project Team</h2>
                             <hr />
                           
@@ -145,69 +145,16 @@
            
         </div>
     </div>
+    <div class="mt-3 ms-5">
+        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+
 </div>   
-<div>
-    <h3>Project Details</h3>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Archived)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Archived)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Company)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Company.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProjectPriority)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProjectPriority.Name)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
 <br/>
 <br/>
 <div class="col-md-12 col">
-    <div class="mt-5">
+    <div class="mt-2">
         <div class="card m-1 p-2">
             <div class="">
                 <h2>Tickets</h2>
